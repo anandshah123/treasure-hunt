@@ -28,6 +28,7 @@
         <module>treasure-app</module>
 		<module>treasure-eureca-server</module>
 		<module>treasure-hunt-team-registration</module>
+		<module>treasure-hunt-entities</module>
 	</modules>
 
 	<dependencies>
