@@ -20,5 +20,5 @@ public class UserInfo {
     @NotNull
     private String team_members;
     @NotNull
-    private String user_role;
+    private String user_role = "ROLE_USER";
 }
