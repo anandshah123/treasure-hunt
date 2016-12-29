@@ -13,3 +13,7 @@ hs_err_pid*
 treasure-hunt-parent/treasure-eureca-server/target/classes/application.properties
 treasure-hunt-parent/treasure-app/target/classes/application.properties
 treasure-hunt-parent/treasure-hunt-entities/target/classes/application.properties
+.idea/modules.xml
+.idea/treasure-hunt.iml
+.idea/vcs.xml
+.idea/workspace.xml

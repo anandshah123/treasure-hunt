@@ -3,22 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <title>Team Registration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/demo.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="css/animate-custom.css" />
 </head>
-<body>
-
-<form method="post" action="http://172.16.3.150:10002/treasure/register">
-    <div>
-        <label>Team Name:</label>
-        <input required="required" type="text" name="team_name"><br/>
-        <label>Username:</label>
-        <input required="required" type="text" name="username"><br/>
-        <label>Password</label>
-        <input required="required" type="password" name="password"><br/>
-        <label>Team Members</label>
-        <input required="required" type="text" name="team_members"><br/>
-        <input type="submit">
-        <input type="reset">
-    </div>
-</form>
-</body>
+    <body>
+        <div class="container">
+            <section>
+                <div id="container_demo" >
+                    <div id="wrapper">
+                        <div class="animate form">
+                            <form  method="post" action="http://172.16.3.150:10002/treasure/register">
+                                <h1>Treasure Hunt Registration </h1>
+                                <p>
+                                    <label class="uname" data-icon="u">Your username</label>
+                                    <input name="username" required="required" type="text" placeholder="myusername" />
+                                </p>
+                                <p>
+                                    <label class="youpasswd" data-icon="p">Your password </label>
+                                    <input name="password" required="required" type="password" placeholder="eg. X8df!90EO"/>
+                                </p>
+                                <p>
+                                    <label class="youmail" data-icon="t" > Your Team Name</label>
+                                    <input name="team_name" required="required" type="text" placeholder="team xyz"/>
+                                </p>
+                                <p>
+                                    <label class="uname" data-icon="g">Team Members</label>
+                                    <input name="team_members" required="required" type="text" placeholder="member1, member2, member3" />
+                                </p>
+                                <p class="signin button">
+                                    <input type="submit" value="Register"/>
+                                </p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </body>
 </html>
