@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -34,9 +34,7 @@ public class UserServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserInfo userInfo = cache.get(username);
-        System.out.println(userInfo.getUser_role());
         GrantedAuthority authority = new SimpleGrantedAuthority(userInfo.getUser_role());
-        UserDetails userDetails = (UserDetails) new User(userInfo.getUsername(), userInfo.getPassword(), Arrays.asList(authority));
-        return userDetails;
+        return new User(userInfo.getUsername(), userInfo.getPassword(), Collections.singletonList(authority));
     }
 }
