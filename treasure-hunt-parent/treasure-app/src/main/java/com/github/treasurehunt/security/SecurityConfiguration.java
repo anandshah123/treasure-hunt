@@ -17,15 +17,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 @EnableJpaRepositories(basePackages = {"com.github.treasurehunt.dao"})
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
- 
-    private static String REALM="MY_TEST_REALM";
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/treasure/register").permitAll().
-                antMatchers("/treasure/*").fullyAuthenticated().and().
-                httpBasic().realmName(REALM).authenticationEntryPoint(getBasicAuthEntryPoint())
-                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        http.authorizeRequests()
+                .antMatchers("/treasure/register").permitAll()
+                .antMatchers("/restart", "/pause", "/resume").hasRole("ADMIN")
+                .antMatchers("/health", "/info").permitAll()
+                .anyRequest().fullyAuthenticated().and().httpBasic()
+                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().csrf().disable();
     }
 
@@ -37,10 +37,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     public void registerAuthentication(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(apiUserDetailsService());
-    }
-
-    @Bean
-    public CustomBasicAuthenticationEntryPoint getBasicAuthEntryPoint(){
-        return new CustomBasicAuthenticationEntryPoint();
     }
 }
