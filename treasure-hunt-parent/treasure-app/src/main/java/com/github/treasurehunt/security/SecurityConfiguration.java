@@ -22,7 +22,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/treasure/*").fullyAuthenticated().and().
+        http.authorizeRequests().antMatchers("/treasure/register").permitAll().
+                antMatchers("/treasure/*").fullyAuthenticated().and().
                 httpBasic().realmName(REALM).authenticationEntryPoint(getBasicAuthEntryPoint())
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().csrf().disable();
