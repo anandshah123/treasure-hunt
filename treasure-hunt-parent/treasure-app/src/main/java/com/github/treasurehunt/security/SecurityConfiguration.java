@@ -1,36 +1,24 @@
 package com.github.treasurehunt.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.http.HttpMethod;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-
-import javax.sql.DataSource;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 @Configuration
 @EnableWebSecurity
-@PropertySource("classpath:application.properties")
+@EnableJpaRepositories(basePackages = {"com.github.treasurehunt.dao"})
+@EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
  
     private static String REALM="MY_TEST_REALM";
-
-
-    @Autowired
-    public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
-        //auth.inMemoryAuthentication().withUser("admin").password("123").roles("ADMIN");
-        //auth.inMemoryAuthentication().withUser("user").password("123").roles("USER");
-        auth.userDetailsService(new UserServiceImpl());
-    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -41,22 +29,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    public UserDetailsService apiUserDetailsService() {
+        return new UserServiceImpl();
+    }
+
+    @Autowired
+    public void registerAuthentication(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(apiUserDetailsService());
+    }
+
+    @Bean
     public CustomBasicAuthenticationEntryPoint getBasicAuthEntryPoint(){
         return new CustomBasicAuthenticationEntryPoint();
     }
-
-    @ConfigurationProperties(prefix="spring.datasource")
-    @Bean
-    @Primary
-    public DataSource dataSource() {
-        return DataSourceBuilder
-                .create()
-                .build();
-    }
-     
-    /* To allow Pre-flight [OPTIONS] request from browser */
-    /*@Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(HttpMethod.OPTIONS, "*//**//**");
-    }*/
 }

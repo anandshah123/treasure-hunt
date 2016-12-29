@@ -1,14 +1,9 @@
 package com.github.treasurehunt.controller;
 
 import com.github.treasurehunt.dto.ConfigDTO;
-import com.google.common.net.HttpHeaders;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.crypto.codec.Base64;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
-import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 @RequestMapping("/treasure")
@@ -22,7 +17,7 @@ public class TreasureController {
 
     @Secured("ROLE_USER")
     @GetMapping("/earn")
-    public @ResponseBody String earnMoney(SecurityProperties.User user) {
+    public @ResponseBody String earnMoney(Authentication authentication) {
         return "";
     }
 }
