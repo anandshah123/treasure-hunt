@@ -4,12 +4,13 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 
 @Data
 @Entity
 @Table(name = "user_info")
-public class UserInfo {
+public class UserInfo implements Serializable {
     @Id
     @NotNull
     private String username;

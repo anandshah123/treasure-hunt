@@ -68,10 +68,15 @@ public class TreasureController {
     @PostMapping("/register")
     public @ResponseBody String register(UserInfo userInfo) {
         try {
-            userDao.save(userInfo);
-            return "Registered Successfully...!!!";
+            if(!userDao.exists(userInfo.getUsername())){
+                userDao.save(userInfo);
+                return "Registered Successfully...!!!";
+            }else{
+                return "Already Registered. Please contact admin to update details...!!!";
+            }
         }catch (Exception e){
-            return "Something went wrong. Please try again...!!!";
+            log.error(e.getMessage(), e);
+            throw new  RuntimeException("Can't Register. Internal server error");
         }
     }
 }
