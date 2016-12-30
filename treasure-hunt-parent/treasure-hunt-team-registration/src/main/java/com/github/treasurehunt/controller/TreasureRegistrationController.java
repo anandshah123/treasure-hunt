@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/treasure")
 @Slf4j
-public class TreasureController {
+public class TreasureRegistrationController {
 
     @Autowired
     private UserDao userDao;
