@@ -21,9 +21,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/treasure/register").permitAll()
                 .antMatchers("/restart", "/pause", "/resume").hasRole("ADMIN")
-                .antMatchers("/health", "/info").permitAll()
+                .antMatchers("/treasure/register").permitAll()
+                .antMatchers("/health", "/info","/metrics").permitAll()
                 .anyRequest().fullyAuthenticated().and().httpBasic()
                  .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().csrf().disable();
