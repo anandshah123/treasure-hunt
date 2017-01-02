@@ -3,7 +3,7 @@ package com.github.treasurehunt.controller;
 import com.github.treasurehunt.dao.UserDao;
 import com.github.treasurehunt.dto.ConfigDTO;
 import com.github.treasurehunt.dto.Reward;
-import com.github.treasurehunt.entity.UserInfo;
+import com.google.common.util.concurrent.RateLimiter;
 import lombok.extern.slf4j.Slf4j;
 import org.influxdb.dto.Point;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +27,7 @@ public class TreasureController {
     private static ConfigDTO configDTO = new ConfigDTO();
     private static final AtomicInteger totalHits = new AtomicInteger();
     private static final Random random = new Random();
+    RateLimiter limiter = RateLimiter.create(configDTO.getRateLimit());
 
     @Autowired
     private InfluxDBTemplate<Point> influxDBTemplate;
@@ -35,6 +36,7 @@ public class TreasureController {
     @PostMapping("/config")
     public ConfigDTO setParams(@RequestBody ConfigDTO configDTO) {
         TreasureController.configDTO = configDTO;
+        limiter = RateLimiter.create(configDTO.getRateLimit());
         return configDTO;
     }
 
@@ -42,6 +44,9 @@ public class TreasureController {
     @GetMapping("/earn")
     public Reward earnMoney(Principal user) throws InterruptedException {
         Reward reward;
+
+        limiter.acquire();
+
         if (totalHits.incrementAndGet() < configDTO.getFirstNLucky()) {
             reward = new Reward(configDTO.getFirstNLuckyPoints());
         } else {
