@@ -12,7 +12,11 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -27,7 +31,7 @@ public class TreasureController {
     private static ConfigDTO configDTO = new ConfigDTO();
     private static final AtomicInteger totalHits = new AtomicInteger();
     private static final Random random = new Random();
-    RateLimiter limiter = RateLimiter.create(configDTO.getRateLimit());
+    private Map<String, RateLimiter> limiterMap = new ConcurrentHashMap<>();
 
     @Autowired
     private InfluxDBTemplate<Point> influxDBTemplate;
@@ -36,7 +40,6 @@ public class TreasureController {
     @PostMapping("/config")
     public ConfigDTO setParams(@RequestBody ConfigDTO configDTO) {
         TreasureController.configDTO = configDTO;
-        limiter = RateLimiter.create(configDTO.getRateLimit());
         return configDTO;
     }
 
@@ -45,7 +48,14 @@ public class TreasureController {
     public Reward earnMoney(Principal user) throws InterruptedException {
         Reward reward;
 
-        limiter.acquire();
+        if(limiterMap.get(user.getName()) == null){
+            limiterMap.put(user.getName(),RateLimiter.create(configDTO.getRateLimit()));
+        }else{
+            if(limiterMap.get(user.getName()).getRate() != configDTO.getRateLimit()){
+                limiterMap.get(user.getName()).setRate(configDTO.getRateLimit());
+            }
+            limiterMap.get(user.getName()).acquire();
+        }
 
         if (totalHits.incrementAndGet() < configDTO.getFirstNLucky()) {
             reward = new Reward(configDTO.getFirstNLuckyPoints());
