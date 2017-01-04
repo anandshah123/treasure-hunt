@@ -1,19 +1,7 @@
-*.class
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.ear
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-treasure-hunt-parent/treasure-eureca-server/target/classes/application.properties
-treasure-hunt-parent/treasure-app/target/classes/application.properties
-treasure-hunt-parent/treasure-hunt-entities/target/classes/application.properties
-.idea/modules.xml
-.idea/treasure-hunt.iml
-.idea/vcs.xml
-.idea/workspace.xml
+**/*.iml
+**/.mvn
+**/.idea
+**/target
+**/dist
+**/bin
+**/*.log
