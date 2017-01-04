@@ -33,4 +33,4 @@ They will
 
 ## Architecture
 
-![Treasure hunt application system architecture](Treasure hunt castle architecture.png?raw=true "Treasure hunt application system architecture")
+![Treasure hunt application system architecture](treasure-hunt-parent/Treasure hunt castle architecture.png?raw=true "Treasure hunt application system architecture")
