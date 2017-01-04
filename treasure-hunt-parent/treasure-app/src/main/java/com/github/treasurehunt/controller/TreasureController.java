@@ -12,8 +12,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
@@ -24,7 +22,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 @RequestMapping("/treasure")
 @Slf4j
 public class TreasureController {
-
 
     @Autowired
     private UserDao userDao;
@@ -48,20 +45,21 @@ public class TreasureController {
     public Reward earnMoney(Principal user) throws InterruptedException {
         Reward reward;
 
-        if(limiterMap.get(user.getName()) == null){
-            limiterMap.put(user.getName(),RateLimiter.create(configDTO.getRateLimit()));
-        }else{
-            if(limiterMap.get(user.getName()).getRate() != configDTO.getRateLimit()){
-                limiterMap.get(user.getName()).setRate(configDTO.getRateLimit());
-            }
-            limiterMap.get(user.getName()).acquire();
+        if (!limiterMap.containsKey(user.getName())) {
+            limiterMap.put(user.getName(), RateLimiter.create(configDTO.getRateLimit()));
         }
+
+        if (limiterMap.get(user.getName()).getRate() != configDTO.getRateLimit()) {
+            limiterMap.get(user.getName()).setRate(configDTO.getRateLimit());
+        }
+        limiterMap.get(user.getName()).acquire();
 
         if (totalHits.incrementAndGet() < configDTO.getFirstNLucky()) {
             reward = new Reward(configDTO.getFirstNLuckyPoints());
         } else {
             reward = new Reward(configDTO.getMinPoints() + random.nextInt(configDTO.getMaxPoints() - configDTO.getMinPoints()));
         }
+
         if (configDTO.getResponseDelay() > 0) {
             Thread.sleep(configDTO.getResponseDelay());
         }

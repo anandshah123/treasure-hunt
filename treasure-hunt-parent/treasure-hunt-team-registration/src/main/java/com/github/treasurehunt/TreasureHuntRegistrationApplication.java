@@ -9,6 +9,6 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 @EnableEurekaClient
 public class TreasureHuntRegistrationApplication {
     public static void main(String[] args) {
-            SpringApplication.run(com.github.treasurehunt.TreasureHuntRegistrationApplication.class, args);
+        SpringApplication.run(com.github.treasurehunt.TreasureHuntRegistrationApplication.class, args);
     }
 }
