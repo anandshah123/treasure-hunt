@@ -29,3 +29,8 @@ They will
 
 -	Team can GET castle ``rooms map`` always at: http://eureka.server:8761/eureka/apps
 -	To GET money from any ``room`` pattern will be: http://treasure-app.server:10001/treasure/earn
+
+
+## Architecture
+
+![Treasure hunt application system architecture](Treasure hunt castle architecture.png?raw=true "Treasure hunt application system architecture")
