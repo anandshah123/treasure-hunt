@@ -37,6 +37,7 @@ public class TreasureController {
     @PostMapping("/config")
     public ConfigDTO setParams(@RequestBody ConfigDTO configDTO) {
         TreasureController.configDTO = configDTO;
+        totalHits.set(0);
         return configDTO;
     }
 
